@@ -17,7 +17,7 @@ ski_month = 'April'
 day = 3
 mountain = 'Vail'
 # where to send text (options == [<phone>@txt.att.net, <phone>@vtext.com, <phone>@tmomail.net])
-phone_receiver = <phone>
+phone_receiver = '' 
 
 # get current month
 date_today = datetime.datetime.now()
