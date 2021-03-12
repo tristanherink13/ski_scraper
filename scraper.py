@@ -13,8 +13,8 @@ from selenium.webdriver.support.ui import Select
 ### ensure chromedriver and chrome have comptaible versions and are installed in path ###
 
 # chose day/mounatin you're trying to ski on given month and where to send message
-ski_month = 'November'
-day = 27
+ski_month = 'April'
+day = 3
 mountain = 'Vail'
 # where to send text (options == [<phone>@txt.att.net, <phone>@vtext.com, <phone>@tmomail.net])
 phone_receiver = '4097813577@vtext.com'#'7133058448@tmomail.net'
@@ -139,19 +139,20 @@ msg = ''
 unavailable_msg = ''
 if ski_month != current_month:
     try:
-        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[3]/div/div[2]/div[2]/div/div/div/div[3]/div[2]/div[1]/div[2]/div[2]/div/div[1]/button[2]')))
-        next_button = driver.find_element_by_xpath('/html/body/div[3]/div/div[2]/div[2]/div/div/div/div[3]/div[2]/div[1]/div[2]/div[2]/div/div[1]/button[2]')
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="passHolderReservations__wrapper"]/div[3]/div[2]/div[1]/div[2]/div[2]/div/div[1]/button[2]')))
+        next_button = driver.find_element_by_xpath('//*[@id="passHolderReservations__wrapper"]/div[3]/div[2]/div[1]/div[2]/div[2]/div/div[1]/button[2]')
     except Exception as e:
         print(e)
     if next_button.is_enabled():
         i = 0
         while i < num_clicks:
             try:
-                WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="passHolderReservations__wrapper"]/div[3]/div[2]/div[1]/div[2]/div[2]/div/div[1]/button[2]')))
                 i += 1
+                WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.XPATH, '//*[@id="passHolderReservations__wrapper"]/div[3]/div[2]/div[1]/div[2]/div[2]/div/div[1]/button[2]')))
                 next_button.click()
-            except Exception as e:
-                print(e)
+            except:
+                # season is over
+                break
         try:
             WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[3]/div/div[2]/div[2]/div/div/div/div[3]/div[2]/div[1]/div[2]/div[2]/div/div[4]/button[{}]'.format(day))))
             calendar_button = driver.find_element_by_xpath('/html/body/div[3]/div/div[2]/div[2]/div/div/div/div[3]/div[2]/div[1]/div[2]/div[2]/div/div[4]/button[{}]'.format(day))
@@ -176,8 +177,7 @@ else:
     else:
         unavailable_msg = ('{} {} is not available at {}...'.format(ski_month, day, mountain))
 
-# sleep on webpage and cleanly exit
-time.sleep(5)
+# cleanly exit
 driver.quit()
 
 #setup email for ski notification
